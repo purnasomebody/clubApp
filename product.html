@@ -169,7 +169,7 @@
             self.getAll = function () {
 
                 self.products.removeAll();
-                $.getJSON("/api/products", function (products) {
+                $.getJSON("http://192.168.0.125:9123/api/products", function (products) {
                     $.each(products, function (index, product) {
                         self.products.push(new ProductViewModel(product));
                     })
@@ -188,7 +188,7 @@
 
                 // Send AJX request to get the product by ID
                 $.getJSON(
-                    'api/products/' + id,
+                    'http://192.168.0.125:9123/api/products/' + id,
                     function (data) {
                         self.product(new ProductViewModel(data));
                     })
@@ -212,7 +212,7 @@
                 };
 
                 $.ajax({
-                    url: 'api/products/' + id,
+                    url: 'http://192.168.0.125:9123/api/products/' + id,
                     cache: false,
                     type: 'PUT',
                     contentType: 'application/json; charset=utf-8',
@@ -235,7 +235,7 @@
                 };
 
                 $.ajax({
-                    url: 'api/products',
+                    url: 'http://192.168.0.125:9123/api/products',
                     cache: false,
                     type: 'POST',
                     contentType: 'application/json; charset=utf-8',
@@ -254,7 +254,7 @@
             }
 
             // Initialize the view-model
-            $.getJSON("/api/products", function (products) {
+            $.getJSON("http://192.168.0.125:9123/api/products", function (products) {
                 $.each(products, function (index, product) {
                     self.products.push(new ProductViewModel(product));
                 })

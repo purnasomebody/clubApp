@@ -199,7 +199,7 @@
             self.getAll = function () {
 
                 self.memberinfos.removeAll();
-                $.getJSON("/api/memberinfos", function (memberinfos) {
+                $.getJSON("http://192.168.0.125:9123/api/memberinfos", function (memberinfos) {
                     $.each(memberinfos, function (index, memberinfo) {
                         self.memberinfos.push(new MemberViewModel(memberinfo));
                     })
@@ -218,7 +218,7 @@
 
                 // Send AJX request to get the product by ID
                 $.getJSON(
-                    'api/memberinfos/' + id,
+                    'http://192.168.0.125:9123/api/memberinfos/' + id,
                     function (data) {
                         self.memberinfo(new MemberViewModel(data));
                     })
@@ -243,7 +243,7 @@
                 };
 
                 $.ajax({
-                    url: 'api/memberinfos/' + id,
+                    url: 'http://192.168.0.125:9123/api/memberinfos/' + id,
                     cache: false,
                     type: 'PUT',
                     contentType: 'application/json; charset=utf-8',
@@ -267,7 +267,7 @@
                 };
 
                 $.ajax({
-                    url: 'api/memberinfos',
+                    url: 'http://192.168.0.125:9123/api/memberinfos',
                     cache: false,
                     type: 'POST',
                     contentType: 'application/json; charset=utf-8',
@@ -286,7 +286,7 @@
             }
 
             // Initialize the view-model
-            $.getJSON("/api/memberinfos", function (memberinfos) {
+            $.getJSON("http://192.168.0.125:9123/api/memberinfos", function (memberinfos) {
                 $.each(memberinfos, function (index, memberinfo) {
                     self.memberinfos.push(new MemberViewModel(memberinfo));
                 })
