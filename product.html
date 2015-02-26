@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html class=" js no-flexbox flexbox-legacy canvas canvastext webgl touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Product Store</title>
+    <link href="Member%20Information_files/site.css" rel="stylesheet">
+
+    <script src="Member%20Information_files/modernizr-2.js"></script>
+
+</head>
+<body>
+    
+
+
+
+
+<div id="body">
+    <section class="content-wrapper main-content">
+        <h3>Products</h3>
+
+        <table id="products">
+            <thead>
+                <tr><th>ID</th><th>Name</th><th>Category</th><th>Price</th></tr>
+            </thead>
+            <tbody data-bind="foreach: products">
+                <tr>
+                    <td data-bind="text: Id">1</td>
+                    <td data-bind="text: Name">Tomato soup</td>
+                    <td data-bind="text: Category">Groceries</td>
+                    <td data-bind="text: Price">1.39</td>
+                </tr>
+            
+                <tr>
+                    <td data-bind="text: Id">2</td>
+                    <td data-bind="text: Name">Yo-yo</td>
+                    <td data-bind="text: Category">Toys</td>
+                    <td data-bind="text: Price">3.75</td>
+                </tr>
+            
+                <tr>
+                    <td data-bind="text: Id">3</td>
+                    <td data-bind="text: Name">Hammer</td>
+                    <td data-bind="text: Category">Hardware</td>
+                    <td data-bind="text: Price">16.99</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </section>
+    <section id="detail" class="content-wrapper">
+
+        <div class="ui-tabs ui-widget ui-widget-content ui-corner-all" id="tabs">
+            <!-- div for jQuery UI tabs -->
+            <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+                <li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active"><a href="#viewTab">View Product</a></li>
+                <li class="ui-state-default ui-corner-top"><a href="#addNewTab">Add New Product</a></li>
+            </ul>
+
+            <div class="ui-tabs-panel ui-widget-content ui-corner-bottom" id="viewTab">
+                <label for="productId">ID</label>
+                <input title="ID" name="Id" id="productId" size="5" type="text">
+                <input value="Get" data-bind="click: getById" type="button">
+
+                <div data-bind="if: product()"></div>
+            </div>
+
+            <div class="ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs-hide" id="addNewTab">
+                <div>
+                    <label for="name">Name</label>
+                    <input title="Name" id="name2" type="text">
+                </div>
+
+                <div>
+                    <label for="category">Category</label>
+                    <input title="Category" id="category2" type="text">
+                </div>
+
+                <div>
+                    <label for="price">Price</label>
+                    <input title="Price" id="price2" type="text">
+                </div>
+
+                <div>
+                    <input value="Add New" data-bind="click: create" "="" type="button">
+                </div>
+            </div>
+
+        </div>
+        <div>
+            <p id="status" data-bind="text: status"></p></div>
+
+    </section>
+</div>
+
+
+
+    <script src="Member%20Information_files/jquery-1.js"></script>
+
+    <link href="Member%20Information_files/jquery_006.css" rel="stylesheet">
+<link href="Member%20Information_files/jquery.css" rel="stylesheet">
+<link href="Member%20Information_files/jquery_004.css" rel="stylesheet">
+<link href="Member%20Information_files/jquery_012.css" rel="stylesheet">
+<link href="Member%20Information_files/jquery_002.css" rel="stylesheet">
+<link href="Member%20Information_files/jquery_005.css" rel="stylesheet">
+<link href="Member%20Information_files/jquery_007.css" rel="stylesheet">
+<link href="Member%20Information_files/jquery_008.css" rel="stylesheet">
+<link href="Member%20Information_files/jquery_011.css" rel="stylesheet">
+<link href="Member%20Information_files/jquery_003.css" rel="stylesheet">
+<link href="Member%20Information_files/jquery_010.css" rel="stylesheet">
+<link href="Member%20Information_files/jquery_009.css" rel="stylesheet">
+
+    <script src="Member%20Information_files/jquery-ui-1.js"></script>
+
+
+    
+    <style type="text/css">
+        table {
+            border: 1px solid #000;
+            border-collapse: collapse;
+            color: #666666;
+            min-width: 200px;
+        }
+
+        tr {
+            border: 1px solid #000;
+            line-height: 25px;
+        }
+
+        th {
+            background-color: #B1C3CC;
+            color: #000;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        th, td {
+            padding-left: 5px;
+        }
+
+        #status {
+            color: red;
+        }
+    </style>
+
+    <script src="Member%20Information_files/knockout-2.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        function ViewModel() {
+
+            var self = this;
+
+            // A nested view model that represents a single product.
+            function ProductViewModel(product) {
+                var self = this;
+
+                self.Id = product.Id;
+                self.Name = product.Name;
+                self.Price = product.Price;
+                self.Category = product.Category;
+            }
+
+            self.products = ko.observableArray();   // Contains the list of products
+            self.product = ko.observable();
+
+            self.status = ko.observable();
+
+            // Get a list of all products
+            self.getAll = function () {
+
+                self.products.removeAll();
+                $.getJSON("/api/products", function (products) {
+                    $.each(products, function (index, product) {
+                        self.products.push(new ProductViewModel(product));
+                    })
+                });
+            }
+
+            // Find a product by product ID
+            self.getById = function () {
+                self.status("");
+                var id = $('#productId').val();
+
+                if (!id.length) {
+                    self.status("ID is required");
+                    return;
+                }
+
+                // Send AJX request to get the product by ID
+                $.getJSON(
+                    'api/products/' + id,
+                    function (data) {
+                        self.product(new ProductViewModel(data));
+                    })
+                    // Handler for error response:
+                    .fail(
+                        function (xhr, textStatus, err) {
+                            self.product(null);
+                            self.status(err);
+                        });
+            }
+
+            // Update product details
+            self.update = function () {
+                self.status("");
+                var id = $('#productId').val();
+
+                var product = {
+                    Name: $('#name').val(),
+                    Price: $('#price').val(),
+                    Category: $('#category').val()
+                };
+
+                $.ajax({
+                    url: 'api/products/' + id,
+                    cache: false,
+                    type: 'PUT',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(product),
+                    success: self.getAll
+                })
+                .fail(
+                function (xhr, textStatus, err) {
+                    self.status(err);
+                });
+            }
+
+            self.create = function () {
+                self.status("");
+
+                var product = {
+                    Name: $('#name2').val(),
+                    Price: $('#price2').val(),
+                    Category: $('#category2').val()
+                };
+
+                $.ajax({
+                    url: 'api/products',
+                    cache: false,
+                    type: 'POST',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(product),
+                    statusCode: {
+                        201 /*Created*/: function (data) {
+                            self.products.push(data);
+                        }
+                    }
+                })
+                .fail(
+                function (xhr, textStatus, err) {
+                    self.status(err);
+                });
+
+            }
+
+            // Initialize the view-model
+            $.getJSON("/api/products", function (products) {
+                $.each(products, function (index, product) {
+                    self.products.push(new ProductViewModel(product));
+                })
+            });
+
+        }
+
+        function clearStatus() {
+            $('#status').html('');
+        }
+
+        function add() {
+
+            clearStatus();
+
+            var product = ko.toJS(viewModel);
+            var json = JSON.stringify(product);
+
+            $.ajax({
+                url: API_URL,
+                cache: false,
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                data: json,
+                statusCode: {
+                    201 /*Created*/: function (data) {
+                        self.products.push(data);
+                    }
+                }
+            });
+        }
+
+        var viewModel = new ViewModel();
+        ko.applyBindings(viewModel);
+
+        // Initialize jQuery tab widget
+        $("#tabs").tabs();
+
+    </script>
+
+
+<!-- Visual Studio Browser Link -->
+<script type="application/json" id="__browserLink_initializationData">
+    {"appName":"Firefox","requestId":"52a06e32dffb40e4bf78faddfb691063"}
+</script>
+<script type="text/javascript" src="Member%20Information_files/browserLink" async="async"></script>
+<!-- End Browser Link -->
+
+
+
+</body></html>
