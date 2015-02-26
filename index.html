@@ -18,7 +18,7 @@
 <div id="body">
     <section class="content-wrapper main-content">
         <h3>member Information List</h3>
-
+        <a href="product.html">product</a>
         <table id="products">
             <thead>
                 <tr>
@@ -45,6 +45,30 @@
                     <td data-bind="text: Phone">qwer</td>
                     <td data-bind="text: Email">qwer</td>
                 </tr>
+            
+                <tr>
+                    <td data-bind="text: Id">3</td>
+                    <td data-bind="text: Name">sujan</td>
+                    <td data-bind="text: Address"></td>
+                    <td data-bind="text: Phone"></td>
+                    <td data-bind="text: Email"></td>
+                </tr>
+            
+                <tr>
+                    <td data-bind="text: Id">4</td>
+                    <td data-bind="text: Name">qwer sujan</td>
+                    <td data-bind="text: Address">qwer</td>
+                    <td data-bind="text: Phone">qwer</td>
+                    <td data-bind="text: Email">qwer</td>
+                </tr>
+            
+                <tr>
+                    <td data-bind="text: Id">5</td>
+                    <td data-bind="text: Name">qwer purna</td>
+                    <td data-bind="text: Address">qwer</td>
+                    <td data-bind="text: Phone">qwer</td>
+                    <td data-bind="text: Email">qwer</td>
+                </tr>
             </tbody>
         </table>
 
@@ -54,11 +78,11 @@
         <div class="ui-tabs ui-widget ui-widget-content ui-corner-all" id="tabs">
             <!-- div for jQuery UI tabs -->
             <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-                <li class="ui-state-default ui-corner-top"><a href="#viewTab">View members</a></li>
-                <li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active"><a href="#addNewTab">Add New member</a></li>
+                <li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active"><a href="#viewTab">View members</a></li>
+                <li class="ui-state-default ui-corner-top"><a href="#addNewTab">Add New member</a></li>
             </ul>
 
-            <div class="ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs-hide" id="viewTab">
+            <div class="ui-tabs-panel ui-widget-content ui-corner-bottom" id="viewTab">
                 <label for="Id">ID</label>
                 <input title="ID" name="Id" id="Id" size="5" type="text">
                 <input value="Get" data-bind="click: getById" type="button">
@@ -66,24 +90,24 @@
                 <div data-bind="if: memberinfo()"></div>
             </div>
 
-            <div class="ui-tabs-panel ui-widget-content ui-corner-bottom" id="addNewTab">
+            <div class="ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs-hide" id="addNewTab">
                 <div>
                     <label for="Name2">Name</label>
-                    <input value="qwer" title="Name" id="Name2" type="text">
+                    <input title="Name" id="Name2" type="text">
                 </div>
 
                 <div>
                     <label for="Address2">Address</label>
-                    <input value="qwer" title="Category" id="Address2" type="text">
+                    <input title="Category" id="Address2" type="text">
                 </div>
 
                 <div>
                     <label for="Phone2">Phone</label>
-                    <input value="qwer" title="Price" id="Phone2" type="text">
+                    <input title="Price" id="Phone2" type="text">
                 </div>
                 <div>
                     <label for="Email2">Email</label>
-                    <input value="qwer" title="Price" id="Email2" type="text">
+                    <input title="Price" id="Email2" type="text">
                 </div>
 
                 <div>
@@ -102,18 +126,18 @@
 
     <script src="Member%20Information_files/jquery-1.js"></script>
 
-    <link href="Member%20Information_files/jquery_004.css" rel="stylesheet">
+    <link href="Member%20Information_files/jquery_006.css" rel="stylesheet">
 <link href="Member%20Information_files/jquery.css" rel="stylesheet">
+<link href="Member%20Information_files/jquery_004.css" rel="stylesheet">
 <link href="Member%20Information_files/jquery_012.css" rel="stylesheet">
-<link href="Member%20Information_files/jquery_003.css" rel="stylesheet">
-<link href="Member%20Information_files/jquery_008.css" rel="stylesheet">
-<link href="Member%20Information_files/jquery_007.css" rel="stylesheet">
-<link href="Member%20Information_files/jquery_011.css" rel="stylesheet">
 <link href="Member%20Information_files/jquery_002.css" rel="stylesheet">
 <link href="Member%20Information_files/jquery_005.css" rel="stylesheet">
+<link href="Member%20Information_files/jquery_007.css" rel="stylesheet">
+<link href="Member%20Information_files/jquery_008.css" rel="stylesheet">
+<link href="Member%20Information_files/jquery_011.css" rel="stylesheet">
+<link href="Member%20Information_files/jquery_003.css" rel="stylesheet">
 <link href="Member%20Information_files/jquery_010.css" rel="stylesheet">
 <link href="Member%20Information_files/jquery_009.css" rel="stylesheet">
-<link href="Member%20Information_files/jquery_006.css" rel="stylesheet">
 
     <script src="Member%20Information_files/jquery-ui-1.js"></script>
 
@@ -175,7 +199,7 @@
             self.getAll = function () {
 
                 self.memberinfos.removeAll();
-                $.getJSON("http://192.168.0.125:9123/api/memberinfos", function (memberinfos) {
+                $.getJSON("/api/memberinfos", function (memberinfos) {
                     $.each(memberinfos, function (index, memberinfo) {
                         self.memberinfos.push(new MemberViewModel(memberinfo));
                     })
@@ -194,7 +218,7 @@
 
                 // Send AJX request to get the product by ID
                 $.getJSON(
-                    'http://192.168.0.125:9123/api/memberinfos/' + id,
+                    'api/memberinfos/' + id,
                     function (data) {
                         self.memberinfo(new MemberViewModel(data));
                     })
@@ -219,7 +243,7 @@
                 };
 
                 $.ajax({
-                    url: 'http://192.168.0.125:9123/api/memberinfos/' + id,
+                    url: 'api/memberinfos/' + id,
                     cache: false,
                     type: 'PUT',
                     contentType: 'application/json; charset=utf-8',
@@ -243,7 +267,7 @@
                 };
 
                 $.ajax({
-                    url: 'http://192.168.0.125:9123/api/memberinfos',
+                    url: 'api/memberinfos',
                     cache: false,
                     type: 'POST',
                     contentType: 'application/json; charset=utf-8',
@@ -262,7 +286,7 @@
             }
 
             // Initialize the view-model
-            $.getJSON("http://192.168.0.125:9123/api/memberinfos", function (memberinfos) {
+            $.getJSON("/api/memberinfos", function (memberinfos) {
                 $.each(memberinfos, function (index, memberinfo) {
                     self.memberinfos.push(new MemberViewModel(memberinfo));
                 })
@@ -306,7 +330,7 @@
 
 <!-- Visual Studio Browser Link -->
 <script type="application/json" id="__browserLink_initializationData">
-    {"appName":"Firefox","requestId":"cf2b88ad8a7e41c99e0a7480cefab5d0"}
+    {"appName":"Firefox","requestId":"2a14b9ac6d1b46869fcda45a7606cc3a"}
 </script>
 <script type="text/javascript" src="Member%20Information_files/browserLink" async="async"></script>
 <!-- End Browser Link -->
